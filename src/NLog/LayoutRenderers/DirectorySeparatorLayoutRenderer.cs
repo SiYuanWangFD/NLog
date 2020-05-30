@@ -47,11 +47,20 @@ namespace NLog.LayoutRenderers
     [AppDomainFixedOutput]
     public class DirectorySeparatorLayoutRenderer : LayoutRenderer, IRawValue
     {
-        private static readonly char SeparatorChar;
+        private static char? _separatorChar;
 
-        static DirectorySeparatorLayoutRenderer()
+        private static char SeparatorChar
         {
-            SeparatorChar = Path.DirectorySeparatorChar;
+            get
+            {
+                if (_separatorChar == null)
+                {
+                    var separatorChar = Path.DirectorySeparatorChar;
+                    _separatorChar = separatorChar;
+                    return separatorChar;
+                }
+                return _separatorChar.Value;
+            }
         }
 
         /// <inheritdoc/>
